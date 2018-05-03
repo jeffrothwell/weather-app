@@ -14,6 +14,13 @@ class Weather extends Component {
     }
   }
 
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(position => {
+      console.log("latitude " + position.coords.latitude);
+      console.log("longitude " + position.coords.longitude);
+    })
+  }
+
   render() {
     return (
       <div className="Weather">
