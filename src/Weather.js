@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+const API_KEY = process.env.REACT_APP_DARK_SKY_API_KEY
+
 class Weather extends Component {
   constructor () {
     super();
@@ -16,10 +18,19 @@ class Weather extends Component {
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => {
-      console.log("latitude " + position.coords.latitude);
-      console.log("longitude " + position.coords.longitude);
+      fetch(
+        'https://api.darksky.net/forecast/'
+        + API_KEY
+        + `/${position.coords.latitude},${position.coords.longitude}`
+      ).then(results => {
+        return results.json()
+      }).then(data => {
+        console.log(data);
+      })
     })
   }
+
+
 
   render() {
     return (
