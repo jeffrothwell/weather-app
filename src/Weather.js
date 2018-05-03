@@ -1,49 +1,53 @@
 import React, { Component } from 'react';
 
-// const API_KEY = process.env.REACT_APP_DARK_SKY_API_KEY
-
 class Weather extends Component {
   constructor () {
     super();
 
-    this.state = {
-      currentWeather: {}
-    }
+    this.state = {}
   }
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => {
+      var lat = position.coords.latitude
+      var long = position.coords.longitude
+
+      // first use this free API to reverse lookup city name
       fetch(
-        `${position.coords.latitude}/${position.coords.longitude}.json`
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}&zoom=18&addressdetails=1`
+      ).then(results => {
+        return results.json();
+      }).then(data => {
+        this.setState({city: data.address.city});
+      })
+
+      // now get the weather data
+      fetch(
+        `${lat}/${long}.json`
       ).then(results => {
         return results.json();
       }).then(data => {
         this.setState({
-          currentWeather: {
-            city: "Guelph",
-            temp: data.currently.temperature,
-            summary: data.currently.summary,
-            pop: data.currently.precipProbability
-          }
+          temp: data.currently.temperature,
+          summary: data.currently.summary,
+          pop: data.currently.precipProbability
         });
       })
     })
   }
 
-
-
   render() {
     return (
       <div className="Weather">
-        <h2>{this.state.currentWeather.city}</h2>
-        <p>{this.state.currentWeather.summary}</p>
+        <h2>{this.state.city}</h2>
+        <p>{this.state.summary}</p>
         <p>
           <span className="attribute">Temperature: </span>
-          <span className="value">{this.state.currentWeather.temp} deg C</span>
+          <span className="value">{this.state.temp} deg C</span>
         </p>
         <p>
           <span className="attribute">P.O.P: </span>
-          <span className="value">{this.state.currentWeather.temp}%</span>
+          <span className="value">{this.state.pop * 100}%</span>
         </p>
       </div>
     );
