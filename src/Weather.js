@@ -6,7 +6,10 @@ class Weather extends Component {
 
     this.state = {
       currentWeather: {
-        temp: 45
+        city: "Guelph",
+        temp: 22,
+        summary: "Clear",
+        pop: 60
       }
     }
   }
@@ -14,8 +17,16 @@ class Weather extends Component {
   render() {
     return (
       <div className="Weather">
-        <span className="attribute">Temperature: </span>
-        <span className="value">{this.state.currentWeather.temp}</span>
+        <h2>{this.state.currentWeather.city}</h2>
+        <p>{this.state.currentWeather.summary}</p>
+        <p>
+          <span className="attribute">Temperature: </span>
+          <span className="value">{this.state.currentWeather.temp}</span>
+        </p>
+        <p>
+          <span className="attribute">P.O.P: </span>
+          <span className="value">{this.state.currentWeather.temp}%</span>
+        </p>
       </div>
     );
   }
