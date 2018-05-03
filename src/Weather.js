@@ -19,15 +19,22 @@ class Weather extends Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => {
       fetch(
-        'https://api.darksky.net/forecast/'
-        + API_KEY
-        + `/${position.coords.latitude},${position.coords.longitude}`
+        'http://localhost:4567/'
       ).then(results => {
-        return results.json()
-      }).then(data => {
-        console.log(data);
+        console.log(results);
       })
     })
+    // navigator.geolocation.getCurrentPosition(position => {
+    //   fetch(
+    //     'https://api.darksky.net/forecast/'
+    //     + API_KEY
+    //     + `/${position.coords.latitude},${position.coords.longitude}`
+    //   ).then(results => {
+    //     return results.json()
+    //   }).then(data => {
+    //     console.log(data);
+    //   })
+    // })
   }
 
 
