@@ -1,40 +1,33 @@
 import React, { Component } from 'react';
 
-const API_KEY = process.env.REACT_APP_DARK_SKY_API_KEY
+// const API_KEY = process.env.REACT_APP_DARK_SKY_API_KEY
 
 class Weather extends Component {
   constructor () {
     super();
 
     this.state = {
-      currentWeather: {
-        city: "Guelph",
-        temp: 22,
-        summary: "Clear",
-        pop: 60
-      }
+      currentWeather: {}
     }
   }
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => {
       fetch(
-        'http://localhost:4567/'
+        `${position.coords.latitude}/${position.coords.longitude}.json`
       ).then(results => {
-        console.log(results);
+        return results.json();
+      }).then(data => {
+        this.setState({
+          currentWeather: {
+            city: "Guelph",
+            temp: data.currently.temperature,
+            summary: data.currently.summary,
+            pop: data.currently.precipProbability
+          }
+        });
       })
     })
-    // navigator.geolocation.getCurrentPosition(position => {
-    //   fetch(
-    //     'https://api.darksky.net/forecast/'
-    //     + API_KEY
-    //     + `/${position.coords.latitude},${position.coords.longitude}`
-    //   ).then(results => {
-    //     return results.json()
-    //   }).then(data => {
-    //     console.log(data);
-    //   })
-    // })
   }
 
 
@@ -46,7 +39,7 @@ class Weather extends Component {
         <p>{this.state.currentWeather.summary}</p>
         <p>
           <span className="attribute">Temperature: </span>
-          <span className="value">{this.state.currentWeather.temp}</span>
+          <span className="value">{this.state.currentWeather.temp} deg C</span>
         </p>
         <p>
           <span className="attribute">P.O.P: </span>
