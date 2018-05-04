@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Loading from './Loading';
 import Weather from './Weather';
 import './App.css';
 
@@ -8,7 +9,8 @@ class App extends Component {
 
     this.state = {
       city: "",
-      weatherData: {}
+      weatherData: {},
+      loading: true
     }
   }
 
@@ -17,6 +19,7 @@ class App extends Component {
   }
   updateWeather(e){
     console.log("Start update");
+    this.setState({loading: true})
     navigator.geolocation.getCurrentPosition(position => {
       var lat = position.coords.latitude
       var long = position.coords.longitude
@@ -41,7 +44,8 @@ class App extends Component {
             temp: data.currently.temperature,
             summary: data.currently.summary,
             pop: data.currently.precipProbability
-          }
+          },
+          loading: false
         });
       })
     })
@@ -53,10 +57,11 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Current Weather in:</h1>
-        <Weather
-          city={this.state.city}
-          weatherData={this.state.weatherData}
-        />
+        {this.state.loading ? <Loading /> : <Weather
+            city={this.state.city}
+            weatherData={this.state.weatherData}
+          />
+        }
       <button onClick={(e) => this.updateWeather(e)}>Update Weather</button>
       </div>
     );
