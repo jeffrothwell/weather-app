@@ -13,6 +13,10 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.updateWeather();
+  }
+  updateWeather(e){
+    console.log("Start update");
     navigator.geolocation.getCurrentPosition(position => {
       var lat = position.coords.latitude
       var long = position.coords.longitude
@@ -41,9 +45,11 @@ class App extends Component {
         });
       })
     })
+    console.log("Update complete");
   }
 
   render() {
+
     return (
       <div className="App">
         <h1>Current Weather in:</h1>
@@ -51,6 +57,7 @@ class App extends Component {
           city={this.state.city}
           weatherData={this.state.weatherData}
         />
+      <button onClick={(e) => this.updateWeather(e)}>Update Weather</button>
       </div>
     );
   }
