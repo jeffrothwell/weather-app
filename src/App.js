@@ -56,7 +56,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1>Current Weather in:</h1>
+        <h1>What's My Weather?</h1>
         {this.state.loading ? <Loading /> : <Weather
             city={this.state.city}
             weatherData={this.state.weatherData}
