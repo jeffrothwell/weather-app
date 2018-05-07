@@ -18,7 +18,6 @@ class App extends Component {
     this.updateWeather();
   }
   updateWeather(e){
-    console.log("Start update");
     this.setState({loading: true})
     navigator.geolocation.getCurrentPosition(position => {
       var lat = position.coords.latitude
@@ -49,7 +48,6 @@ class App extends Component {
         });
       })
     })
-    console.log("Update complete");
   }
 
   render() {
