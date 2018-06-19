@@ -10,7 +10,8 @@ class App extends Component {
     this.state = {
       city: "",
       weatherData: {},
-      loading: true
+      loading: true,
+      error: false
     }
   }
 
@@ -44,8 +45,15 @@ class App extends Component {
             summary: data.currently.summary,
             pop: data.currently.precipProbability
           },
-          loading: false
+          loading: false,
+          error: false
         });
+      }).catch(ex => {
+        console.log("Error fetching weather data");
+        this.setState({
+          loading: false,
+          error: true
+        })
       })
     })
   }
@@ -55,7 +63,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>What's My Weather?</h1>
-        {this.state.loading ? <Loading /> : <Weather
+        {   this.state.loading ? <Loading /> : <Weather
             city={this.state.city}
             weatherData={this.state.weatherData}
           />
