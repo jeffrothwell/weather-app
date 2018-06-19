@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Loading from './Loading';
+import Error from './Error'
 import Weather from './Weather';
 import './App.css';
 
@@ -18,6 +19,7 @@ class App extends Component {
   componentDidMount() {
     this.updateWeather();
   }
+
   updateWeather(e){
     this.setState({loading: true})
     navigator.geolocation.getCurrentPosition(position => {
@@ -59,15 +61,22 @@ class App extends Component {
   }
 
   render() {
+    const error = this.state.error
+    let completedWeather;
+
+    if (error) {
+      completedWeather = <Error />
+    } else {
+      completedWeather = <Weather
+        city={this.state.city}
+        weatherData={this.state.weatherData}
+      />
+    }
 
     return (
       <div className="App">
         <h1>What's My Weather?</h1>
-        {   this.state.loading ? <Loading /> : <Weather
-            city={this.state.city}
-            weatherData={this.state.weatherData}
-          />
-        }
+        { this.state.loading ? <Loading /> : completedWeather }
       <button onClick={(e) => this.updateWeather(e)}>Update Weather</button>
       </div>
     );
